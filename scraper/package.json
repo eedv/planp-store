@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cherio": "^1.0.0-rc.2"
+    "cherio": "^1.0.0-rc.2",
+    "node-fetch": "^2.6.1"
   }
 }

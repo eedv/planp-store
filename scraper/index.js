@@ -56,18 +56,37 @@ const getProductsByCategory = async (catNumber) => {
 	return products.flat()
 }
 
-const getProductDetails = (url) => {
-	return {}
+const getProductDetails = async (url) => {
+	const $ = await getHtml(url);
+	const title = $('.product_title').text()
+	const price = $('.woocommerce-Price-amount').text();
+	const mainImage = $('.wp-post-image').attr('src');
+	const description = $('#aguacalma-meta__contenido--descripcion').text();
+	const ingredients = $('#aguacalma-meta__contenido--ingredientes').text();
+	const usage = $('#aguacalma-meta__contenido--mododeuso').text();
+
+	return {
+		title,
+		price,
+		mainImage,
+		description,
+		ingredients,
+		usage
+	}
 }
 
 const startScrapping = async () => {
 	const categories = await getCategories();
-	const productList = await Promise.all(categories.map(async (category) => {
+	let productList = (await Promise.all(categories.map(async (category) => {
 		const categoryProducts = await getProductsByCategory(category.number)
 		return categoryProducts.map((p) => Object.assign(p, category))
-	}))
-	console.log(productList)
+	}))).flat()
+	for (let i = 0; i < productList.length; i++) {
+		let productDetails = await getProductDetails(productList[i].url)
+		Object.assign(productList[i], productDetails)
+	}
 
+	fs.writeFileSync('productList.json', JSON.stringify(productList))
 
 }
 startScrapping()

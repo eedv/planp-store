@@ -8,7 +8,7 @@ const getHtml = async (url) => {
 	try {
 		const response = await fetch(url);
 		const html = await response.text();
-		return html
+		return cherio.load(html);
 	}
 	catch(e) {
 		console.log(e)
@@ -16,44 +16,57 @@ const getHtml = async (url) => {
 
 }
 
-const getPagesUrl = ($pageContent) => {
+const getPages = ($pageContent) => {
 	const pageItems = $pageContent('a.page-numbers:not(:last-child)');
 	const lastPageNumber = $pageContent(pageItems).text()
-	const pagesArr = []
+
 	if(!lastPageNumber) {
-		return [categorieUrl.replace("{{pageNumber}}", 1)]
+		return [1]
 	}
-	for(let i = 0; i < Number(lastPageNumber); i++) {
-		pageArr.push()
-	}
-	console.log(lastPageNumber)
+
+	return Array(Number(lastPageNumber)).fill().map((item, index) => ++index);
 }
 
 const getCategories = async () => {
-	const content = await getHtml(aguaCalmaShopUrl)
-	const $ = cherio.load(content);
+	const $ = await getHtml(aguaCalmaShopUrl)
 	return categories = $('.bapf_body > ul > li > input')
 		.get()
 		.map((elem) => ({name: $(elem).attr('data-name'), number: $(elem).attr('value')}));
 }
 
-const getProductList = ($page) => {
+const getProductList = async (url) => {
+	const $ = await getHtml(url);
+	return list = $('.products li.product img.wp-post-image').get().map(i => {
+		const img = $(i)
+		return {
+			url: img.parent().attr('href'),
+			listingImage: img.attr('src')
+		}
+	});
 
 }
+
 const getProductsByCategory = async (catNumber) => {
 	const url = categorieUrl.replace('{{pageNumber}}', 1).replace('{{catNumber}}', catNumber);
-	const page = await getHtml(url);
-	const $page = cherio.load(page);
-	const pagesUrls = getPagesUrl($page)
-	return []
+	const $page = await getHtml(url);
+	const pages = getPages($page)
+	const products = await Promise.all(pages.map(async (pageNumber) => {
+		return getProductList(categorieUrl.replace('{{pageNumber}}', pageNumber).replace('{{catNumber}}', catNumber))
+	}))
+	return products.flat()
 }
+
 const getProductDetails = (url) => {
 	return {}
 }
 
 const startScrapping = async () => {
 	const categories = await getCategories();
-	getProductsByCategory(categories[1].number)
+	const productList = await Promise.all(categories.map(async (category) => {
+		const categoryProducts = await getProductsByCategory(category.number)
+		return categoryProducts.map((p) => Object.assign(p, category))
+	}))
+	console.log(productList)
 
 
 }

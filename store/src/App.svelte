@@ -30,43 +30,46 @@
     margin: 0.4rem;
   }
 
-  .App-header {
-    background-color: #f9f6f6;
-    color: #333;
-    min-height: 100vh;
+  .product-list {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+  }
+  .product-card {
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-  }
-  @keyframes App-logo-spin {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(1.06);
-    }
+    gap: 0.5rem;
+    width: 300px;
+    min-width: 250px;
+    border: 3px solid #4D217A82;
+    border-radius: 13px;
+    margin: 1rem;
+    padding: 1rem;
+    overflow: hidden;
   }
 </style>
 
 <div class="App">
-  <header class="App-header">
   {#await products}
 	<p>...waiting</p>
   {:then}
-    <input bind:value={searchValue} placeholder="enter your name">
-
-    <ul>
+    <input bind:value={searchValue} placeholder="Buscar producto">
+    <div class="product-list">
       {#each result as product}
-        <li>{product.title} - {product.price} <img src={product.listingImage} width="100px" height="100px" alt="product"/></li>
+        <div class="product-card">
+          <span>{product.title}</span>
+          <span><strong>{product.price}</strong></span>
+          <img src={product.listingImage} width="250px" height="250px" alt="product"/>
+        </div>
       {/each}
-    </ul>
-
+    </div>
   {:catch error}
     <p style="color: red">{error.message}</p>
   {/await}
 
 
-  </header>
+
 </div>

@@ -59,7 +59,7 @@ const getProductsByCategory = async (catNumber) => {
 const getProductDetails = async (url) => {
 	const $ = await getHtml(url);
 	const title = $('.product_title').text()
-	const price = $('.woocommerce-Price-amount').text();
+	const price = $('p .woocommerce-Price-amount').text();
 	const mainImage = $('.wp-post-image').attr('src');
 	const description = $('#aguacalma-meta__contenido--descripcion').text();
 	const ingredients = $('#aguacalma-meta__contenido--ingredientes').text();

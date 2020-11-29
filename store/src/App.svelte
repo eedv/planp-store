@@ -42,13 +42,18 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    width: 300px;
+    width: 100%;
     min-width: 250px;
     border: 3px solid #4D217A82;
     border-radius: 13px;
     margin: 1rem;
     padding: 1rem;
     overflow: hidden;
+  }
+  @media only screen and (min-width:640px) {
+    .product-card {
+      width: 300px;
+    }
   }
 </style>
 

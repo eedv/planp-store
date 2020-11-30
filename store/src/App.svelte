@@ -13,8 +13,10 @@
   getProducts();
   let searchValue = '';
   let result = [];
-  $: if (searchValue && searchValue.length > 2 && products && products.length > 0) {
-		result = products.filter((p) => p.title.toLowerCase().includes(searchValue.toLowerCase()))
+  $: if (products && products.length > 0) {
+    result = searchValue.length > 2
+      ? products.filter((p) => p.title.toLowerCase().includes(searchValue.toLowerCase()))
+      : products
 	}
 </script>
 
@@ -62,11 +64,12 @@
     border: none;
     margin: 0.5rem 1rem;
     flex: 2;
+    min-width: 100px;
   }
 
   @media only screen and (min-width:640px) {
     .product-card {
-      width: 400px;
+      width: 300px;
     }
 
     .search-input {

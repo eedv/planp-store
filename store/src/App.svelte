@@ -24,10 +24,10 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   .App {
-    text-align: center;
-  }
-  .App p {
-    margin: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
   }
 
   .product-list {
@@ -35,7 +35,8 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    text-align: center;
+    gap: 1rem;
+    margin: 1rem 0;
   }
   .product-card {
     display: inline-flex;
@@ -46,13 +47,30 @@
     min-width: 250px;
     border: 3px solid #4D217A82;
     border-radius: 13px;
-    margin: 1rem;
     padding: 1rem;
     overflow: hidden;
   }
+  .search-input {
+    display: flex;
+    width: 100%;
+    border-radius:13px;
+    border: 1px solid lightgray;
+  }
+
+  .search-input input {
+    font-size: 1.5rem;
+    border: none;
+    margin: 0.5rem 1rem;
+    flex: 2;
+  }
+
   @media only screen and (min-width:640px) {
     .product-card {
-      width: 300px;
+      width: 400px;
+    }
+
+    .search-input {
+      width: 400px;
     }
   }
 </style>
@@ -61,7 +79,9 @@
   {#await products}
 	<p>...waiting</p>
   {:then}
-    <input bind:value={searchValue} placeholder="Buscar producto">
+  <div class="search-input">
+    <input  bind:value={searchValue} placeholder="Buscar producto">
+  </div>
     <div class="product-list">
       {#each result as product}
         <div class="product-card">

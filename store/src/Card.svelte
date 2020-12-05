@@ -10,17 +10,23 @@ export let subTitle = '';
 	flex-direction: column;
 	align-items: center;
 	gap: 0.5rem;
-	width: 100%;
-	min-width: 250px;
+	width: calc(100% - 2rem - 6px);
 	border: 3px solid #4d217a82;
 	border-radius: 13px;
 	padding: 1rem;
 	overflow: hidden;
 }
 
-@media only screen and (min-width: 640px) {
+.card img {
+	object-fit: cover;
+	width: 100%;
+	height: 300px;
+}
+
+@media only screen and (min-width: 480px) {
 	.card {
 		width: 300px;
+		height: 350px;
 	}
 }
 </style>
@@ -28,5 +34,5 @@ export let subTitle = '';
 <div class="card">
 	<span>{title}</span>
 	<span><strong>{subTitle}</strong></span>
-	<img src="{imageUrl}" width="250px" height="250px" alt="product" />
+	<img src="{imageUrl}" alt="product" />
 </div>

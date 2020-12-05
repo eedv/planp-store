@@ -11,19 +11,23 @@ import ProductDetailScreen from './ProductDetailScreen';
 }
 .App {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 1rem;
+	justify-content: center;
+}
+.content {
+	margin-top: 3rem;
+	width: 85%;
 }
 </style>
 
 <div class="App">
 	<Router>
-		<Route path="/">
-			<ProductList />
-		</Route>
-		<Route path="/product/:id" let:params>
-			<ProductDetailScreen productTitle="{params.id}" />
-		</Route>
+		<div class="content">
+			<Route path="/">
+				<ProductList />
+			</Route>
+			<Route path="/product/:id" let:params>
+				<ProductDetailScreen productTitle="{params.id}" />
+			</Route>
+		</div>
 	</Router>
 </div>
